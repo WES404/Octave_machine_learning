@@ -18,7 +18,7 @@ h_erro_sqrt = (h - y) .^ 2;
 
 soma = sum(h_erro_sqrt);
 
-J = (1 / (2 * m)) * soma;
+J = 1 / (2 * m) * soma;
 
 
 
