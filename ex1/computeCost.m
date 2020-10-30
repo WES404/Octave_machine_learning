@@ -6,18 +6,20 @@ function J = computeCost(X, y, theta)
 % Initialize some useful values
 m = length(y); % number of training examples
 
-
 % You need to return the following variables correctly
 J = 0;
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
-H_0 = theta(1) + theta(2) * X; %Tira o erro
-H_error = (H_0 - y);
-H_sqr = H_error.^2;
-soma = sum(H_sqr); %soma o erro ao quadrado
+h = theta(1) .* X(:, 1) + theta(2) .* X(:, 2);
+
+h_erro_sqrt = (h - y) .^ 2;
+
+soma = sum(h_erro_sqrt);
+
 J = (1 / (2 * m)) * soma;
+
 
 
 
