@@ -25,7 +25,7 @@ H = - y .* log(SIG) - (1 - y) .* log(1 - SIG); %'
 
 J =  (1 / m) * sum(H);
 
-grad = (1 / m) * sum((SIG - y) .* X);
+grad = (1 / m) * ((SIG - y)' * X);
 
 
 
