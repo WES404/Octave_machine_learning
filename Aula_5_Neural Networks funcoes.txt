@@ -1,0 +1,139 @@
+          ¦a¹¦   ¦a²¦  ¦a³¦
+│ x1 │    ¦a¹¦   ¦a²¦  ¦a³¦
+│ x2 │    ¦a¹¦   ¦a²¦  ¦a³¦  > H_tetha(X)
+│ x3 │    ¦a¹¦   ¦a²¦  ¦a³¦
+          ¦a¹¦   ¦a²¦
+
+L = 4 ~ numero de camadas
+Sl = numero de unidades na camada L
+SL = numero de unidades na camada output
+
+Classificação Binária
+ y = 0 ou 1
+ SL = 1
+ K = 1 ~ Unidades de saida
+ H_tetha(x) e R
+
+Multiclassificação
+ y e Rᵏ
+ k = numeros de unidades de saida 
+ SL = K
+ H_tetha(x) e Rᵏ
+
+Em REGRESSÃO LOGÍSTICA A FUNÇÃO DE CUSTO É:
+ J(θ) = -(1 / m) * soma(y log(H_0) − (1 − y) log(1 − h_0)) + (lambda / 2m) * soma(theta^2)
+
+Em REDES NEURAIS:
+ J(θ) = -(1 / m) * soma(soma_k(y log(H_0) − (1 − y) log(1 − h_0))) 
+ A segunda soma é para o numero de nós do outputs(k)
+
+ Regulazidor
+ (lambda / 2m) * soma_L( soma_i( soma_j(theta^2)))
+
+ A soma dupla é devido a primeira somar fazer a regressão logistica de cada output(k) e somar todas na segunda
+ Na regularização a Tripla soma é para somar os thetas de toda a rede 
+
+====================================================================================================================
+Com a PROPAGAÇÃO FRONTAL(FORWARD PROPAGATION), também conhecido como GRADIENT DESCENT encontramos o valor de H_tetha
+Fazendo o caminho ao contrário tiramos o error entre as equações de ativação
+
+Backward Propagation (PROPAGAÇÃO REVERSA)
+ Em um modelo com L camadas
+
+  ▲ = 0 
+  a¹ = x
+  DELTAᶫ = aᶫ - y
+  DELTAᶫ⁻¹ = thetaᶫ⁻¹ * DELTAᶫ
+       .
+       .
+       .
+  DELTA² ~ fazemos até a camada 2 dado que a 1 é a de entrada(input)
+
+  Calculando DELTAᶫ podemos calcular o restante com:
+  DELTAᶫ⁻¹, DELTAᶫ⁻², .... = ((THETAᶫ).t * DELTAᶫ⁺¹) .* g'(Zᶫ⁻¹)
+  g'(Zᶫ) = aᶫ .* (1 - aᶫ)
+  
+  Atualizamps o ▲ 
+  ▲ := ▲ + aᶫ * DELTAᶫ⁺¹
+  ou vetorizado:
+  ▲ := ▲ + DELTAᶫ⁺¹ .* (aᶫ).T
+
+  E POR FIM ATUALIZAMOS ▲
+
+  D_ij := (1 / M) (▲_ij + LAMBDA * THETA_ij) ; se j != 0
+  D_ij := (1 / M) * ▲_ij ; se j = 0
+ 
+ J'(θ) = D_ij 
+===================================================================================================
+Vetorização DOS TERMOS
+
+Tendo 
+THETA¹, THETA², THETA³ ....
+D¹, D², D³ ...
+
+Juntamos todos em uma matriz só
+OCTAVE/MATHLAB
+ thetaVector = [ Theta¹(:); Theta²(:); Theta³(:); ]
+ deltaVector = [ D¹(:); D²(:); D³(:) ]
+
+ Para tirar:
+ Theta¹ = reshape(thetaVector(1:110),10,11)
+ Theta² = reshape(thetaVector(111:220),10,11)
+ Theta³ = reshape(thetaVector(221:231),1,11)
+=====================================================================================================
+
+CHECANDO O GRADIENT DESCENT
+
+Checar o GRADIENT DESCENT assegura que propagação reversa está funcionando do jeito que queros
+
+ϵ = 10⁻⁴
+
+   Formula
+
+∂ / ∂Θ J(Θ)≈ (J(Θ+ϵ)−J(Θ−ϵ)) / 2ϵ  sendo J(Θ) a derivada parcial de cada Θ
+
+epsilon = 1e-4;
+for i = 1:n,
+  thetaPlus = theta;
+  thetaPlus(i) += epsilon;
+  thetaMinus = theta;
+  thetaMinus(i) -= epsilon;
+  gradApprox(i) = (J(thetaPlus) - J(thetaMinus))/(2*epsilon)
+end;
+Interagindo a cada Θ e guardado em gradApprox
+No fim comparamos gradApprox com deltaVector e deve estar o mais próximo possível
+
+=========================================================================================================
+INICIALIZANDO THETA
+Em REDES NEURAIS, inicializando o theta com 0 não funciona bem, dado que na propagação
+reversa os deltas serão todo iguais
+
+Estipulamos um intervalo em que os thetas estarão ~ [-EPSILON, EPSILON]
+
+Theta¹ = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
+Theta² = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
+Theta³ = rand(1,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
+
+rand(x,y) devolve uma matriz X x Y com numero entre 0 e 1
+
+=========================================================
+Passos
+
+- Escolher Arquitetura da REDE NEURAl
+  . Número de Unidades de entrada
+  . Número de Unidades de Saída
+  . Número de Unidades das camadas ocultas (Todas unidades devem ter o mesmo número)
+  . Número de Camadas ocultas (geralmente 1)
+
+Treinamento a REDE
+1. Inicializar pesos aleatoriamente
+2. Implementar PROPAGAÇÃO FRONTAL para ter o H_tetha(X)
+3. Implementar o CUSTO
+4. Implementar PROPAGAÇÃO REVERSA para encontrar derivadas parciais
+5. Usar a checagem do gradiente para sabe que a PROPAGAÇÃO REVERSA está funcionando
+   e desabilitar
+6. Usar GRADIENT DESCENT, ou outra função optmizadora, para minimizar a Função de CUSTO
+
+for i = 1:m,
+   Faz PROPAGAÇÃO FRONTAL e PROPAGAÇÃO REVERSA usando os exemplos (x(i),y(i))
+   (pega as ativações a(l) e deltas d(l) para  2 <= l <= L

@@ -1,0 +1,104 @@
+Assim que erros na predição forem encontrados, podemos:
+
+. Conseguir mais exemplos de Treinamento
+. Diminuir o número de parâmetros
+. Adicionar mais parâmetros
+. Tentar parâmetros polinomiais
+. Aumentar ou diminuir o valor de lambda
+
+A Hipotese pode ter um erro pequeno mas mesmo assim estar imprecisa (overfitting). Assim, podemos 
+dividir os dados de treinamento em dois:
+
+70% Exemplos de treinamento
+30% Exemplos de Teste
+
+O procedimento então é:
+
+- Aprender o THETA e minimizar o J_treinamento(THETA)
+- Minimizar J_teste(THETA)
+
+Para REGRESSÃO LINEAR
+J_teste(THETA) = (1 / (2 * m_teste)) soma(H(X_teste) - Y_teste)²
+
+Para Classificação (Misclassification)
+               1  se h(X) >= 0.5 e y = 0 ou H(X) < 0.5 e y = 1
+err(h(x), y) = 0
+
+ERROR DE TESTE = (1 / m_teste) * soma(err(H(X_teste), Y_teste)) ; dando a proporção da má classificação
+
+========================================================================================================
+ESCOLHENDO O MODELO 
+
+Podemos saber qual é a melhor função polimonial para computar a hipotese
+
+1 - Separamos os dados em 3:
+ 60% Exemplos de treinamento
+ 20% Exemplos de Validação Cruzada
+ 20% Exemplos de Teste
+
+2 - Agora computamos a função polimonial
+3 - Tiramos o erro de treinamento e de validação Cruzada
+4 - Escolhemos a função polimonial com menor erro de validação
+5 - Estimamos o erro de Teste
+
+======================================================================================================
+DIAGNOSTICANDO BIAS VS VARIÁVEIS    
+
+Bias altas é underfitting
+Variáveis altas é overfitting
+
+O erro de treinamento tende a diminuir conforme aumentamos o grau do polimonial e 
+o erro de Validação Cruzada diminuir conforme aumentamos o grau até um ponto em que volta a crescer.
+
+Bias altos = underfitting - J_treinamento e J_vc estão altos;
+Variáveis altas = overfitting - J_treinamento baixo e J_vc alto;
+==========================================================================================================
+ESCOLHENDO VALOR DO LAMBDA
+
+lambda alto = underfitting
+lambda baixo = overfitting
+
+1 - Criamos uma lista de lambda
+2 - Criamos vários modelos com polimonais diferentes
+3 - Tiramos o erro 
+4 - Fazemos o erro da validação Cruzada com lambda = 0
+5 - Escolhemos o menor erro de validação
+6 - fazemos o J_teste
+
+===========================================================================================================
+Linha de aprendizagem
+
+Com poucos números de dados, o algoritimo terá poucos erros. aumentando o numero de treinamento o erro aumentando
+e se estabelizará em um certo número de exemplos de treino.
+
+Bias altos
+Poucos exemplos de treino = J_treinamento baixo e J_vc altos
+Muito exemplos de treino = J_treinamento aumenta e J_vc descrece a ponto dos dois estarem bem próximos
+
+Se o algoritimo estiver com Bias alto TER MAIS EXEMPLOS DE TREINO NÃO AJUDARÁ A MELHORAR O ALGORITIMO
+
+Variáveis altas
+Poucos exemplos de treino = J_treinamento baixo e J_vc altos
+Muito exemplos de treino = J_treinamento aumenta e J_vc descrece com J_treinamento < J_vc
+
+Nesse caso, ter mais exemplos de treino ajuda a melhorar o algoritimo
+
+==========================================================================================
+DECIDINDO O QUE FAZER
+
+. Conseguir mais exemplos de Treinamento - Para Variáveis altas
+. Diminuir o número de parâmetros - Para Variáveis altas
+. Adicionar mais parâmetros - Para Bias altas
+. Tentar parâmetros polinomiais maiores - Para Bias altas
+. Aumentar o valor de lambda - Para Variáveis altas
+- Diminuir o valor de lambda- Para Bias altas
+
+
+REDE NEURAL com poucos parâmetros fica mais sucetiva a underfitting, mas é computacionalmente barata
+REDE NEURAL com mais parâmetros fica mais sucetiva a overfitting, podemos usar a regularização para diminuir.
+
+Começando com uma camada escondida podemos treinar usando a validação Cruzada e escolher o melhor modelo. 
+
+
+
+

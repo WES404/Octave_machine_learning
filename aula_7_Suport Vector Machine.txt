@@ -1,0 +1,88 @@
+Função de Custo de Regressão Logistica
+ (H_0, y) = - y * log(H_0) - (1 - y) * log(1 - H_0)
+
+Quando
+ y = 1 
+  cost1 =  - log(H_0) ou seja (theta.t * X) >> 0
+
+ y = 0
+  cost0 = - log(1 - H_0) ou seja (theta.t * X) << 0
+
+Fazendo j(min):
+
+ J(θ) = (1 / (2 * m)) * soma( y cost1 + (1 - y) cost0) - (lambda / (2 * m)) * soma(theta ^ 2)
+
+Em Suport Vector Machine
+ 
+  J(θ) = C * soma( y cost1 + (1 - y) cost0) - (1 / 2) * soma(theta ^ 2)
+
+  Sendo C = 1 / lambda
+
+  C grande = lower Bias (lambda pequeno)
+  C pequeno = higher Bias (lambda grande)
+
+Veja que a diferença entre as duas
+ Regrlog = A + lambda * B
+ SVM = C * A + B
+
+A hipótese
+  h_0 | 1 se (theta.t * X) >= 0
+      | 0 
+
+Ao contrário de Regrlog onde
+ Se y = 1, queremos Z >= 0
+ se y = 0, queremos Z < 0
+
+Em SVM
+ Se y = 1, queremos Z >=  1
+ se y = 0, queremos Z <= -1
+
+
+Gaussion KERNELS
+Dentro de uma amostra fazemos landmarks e tiramos a distância de x para os mesmos
+ Dado x: queremos
+  fᵏ = similaridade(x,l)  = exp(- ||x - lᵏ||² / (2 * sigma²))
+  
+  se x ~ 1
+   f ~ exp(- 0² / (2 * sigma²)) ~ 1
+
+  se x está longe de l:
+   f ~ exp(- (numero grande)² / (2 * sigma²)) > 0
+
+ Conforme mudamos o valor de sigma² o grafico muda, sempre procuramos o maior valor de f
+ sigma² grande = higher Bias, variáveis pequenas
+ sigma² pequeno = lower Bias, variáveis altas
+
+
+tendo X_i exemplos, fazemos l_i landmarks
+
+| f0 = 1            |
+| f1 = sim(X_i, l¹) |
+| f2 = sim(X_i, l²) |
+       .
+       .
+       . 
+| fn = sim(X_i, ln) |
+
+f_i = | f0
+        f1
+        f2
+        .
+        .
+        .
+        fn|
+Hipótese
+
+ y = 1 se (theta.t * f_i) >= 0
+
+ usamos a função de custo minimizada
+
+===================
+Escolhas
+
+n = numero de parâmetros
+m = numero de exemplos de treino
+
+Se n >= m use regressão Logistica ou SVM sem KERNEL
+Se n é pequeno e m médio use SVM com KERNEL Gaussian
+Se n pequeno e m grande, add mais parâmetros e uso regressão Logistica ou SVM sem KERNEL
