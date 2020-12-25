@@ -1,0 +1,162 @@
+│ x1 │
+│ x2 │   ¦a²¦ ----> H_tetha(X)
+│ x3 │
+
+2 layer
+Função de ativação -> sigma
+
+          ¦a¹₁¦
+│ x1 │    ¦a¹₂¦   ¦a²¦ ----> H_tetha(X)
+│ x2 │    ¦a¹₃¦
+│ x3 │    ¦a¹₄¦
+
+input     hidden   output
+3 layer
+
+Se o layer tem n unidades e o proximo layer tem n + 1, Então
+Tetha = (n¹, n⁰ + 1)
+
+Forward Propagation
+
+│ x1 │    ¦a¹₁¦
+│ x2 │    ¦a¹₂¦   ¦a²¦ ----> H_tetha(X)
+│ x3 │    ¦a¹₃¦
+
+Cada interação seria assim:
+
+a¹₁ = g(theta¹₁₀ * x₀ + theta¹₁₁ * x₁ + theta¹₁₂ * x₂ + theta¹₁₃ * x₃)
+a¹₂ = g(theta¹₂₀ * x₀ + theta¹₂₁ * x₁ + theta¹₂₂ * x₂ + theta¹₂₃ * x₃)
+a¹₃ = g(theta¹₃₀ * x₀ + theta¹₃₁ * x₁ + theta¹₃₂ * x₂ + theta¹₃₃ * x₃)
+
+H_tetha(X) = a² = g(theta²₁₀ * a¹₁ + theta²₁₁ * a¹₁ + theta²₁₂ * a¹₂ + theta²₁₃ * a¹₃)
+
+Fazendo VETORIZADO:
+
+Z = [Z¹₁
+     Z¹₂
+     Z¹₃]
+
+Onde 
+Z = theta * X
+A = g(Z) 
+
+Assim:
+
+Z¹₁ = theta¹ * X ; sendo X = a⁰ = 1
+a¹₁ = g(Z¹₁)
+
+Z¹₂ = tetha² * a¹₁
+a¹₂ = g(Z¹₂)
+
+Z¹₃ = tetha * a¹₂
+
+Assim:
+H_tetha(X) = a² = g(Z¹₃)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Intuição
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sigma (z) =~ 1 se z >= 4,6
+sigma (z) =~ 0 se z <= - 4,6
+
+│ x0 │
+│ x1 │    ¦a²¦ ----> H_tetha(X)
+│ x2 │
+
+==============================
+Sendo tetha¹ = [-30, 20, 20]
+
+H_tetha = g(-30 + 20X1 + 20X2)
+
+X1  AND  X2   H_tetha
+0        0    g(-30) =~ 0
+0        1    g(-10) =~ 0
+1        0    g(-10) =~ 0
+1        1    g(10) =~ 1
+
+===============================
+Sendo tetha¹ = [-10, 20, 20]
+
+H_tetha = g(-10 + 20X1 + 20X2)
+
+X1  OR   X2   H_tetha
+0        0    g(-10) =~ 0
+0        1    g(10) =~ 1
+1        0    g(10) =~ 1
+1        1    g(10) =~ 1
+
+==================================
+
+│ x0 │
+│ x1 │    ¦a²¦ ----> H_tetha(X)
+
+Sendo tetha¹ = [10, -20]
+
+H_tetha = g(10 - 20X1)
+
+X1    H_tetha (NOT X1)
+0     g(10) =~ 1
+1     g(-10) =~ 0
+
+=================================
+
+(NOT X1) AND (NOT X2)
+
+Será 1 (True) 
+se X1 = X2 = 0
+=================================
+
+Juntando os 3 (or, and, not and not)
+AND
+  tetha¹ = [-30, 20, 20]
+NOR
+  tetha¹ = [10, -20, -20]
+OR
+  tetha¹ = [-10, 20, 20]
+
+Combinando:
+
+│ x1 │    ¦a¹₁¦
+│ x2 │            ¦a²¦ ----> H_tetha(X)
+│ x3 │    ¦a¹₂¦
+
+Sendo:
+  ¦a¹₁¦ ---> AND
+  ¦a¹₂¦ ---> NOR
+  ¦a²₁¦  ---> OR
+
+Juntamos o theta de AND e NOR
+  tetha¹ = [-30, 20, 20, 10, -20, -20]
+
+Assim
+  a¹ = g(theta¹ * X)
+  a² = g(theta² * a¹)
+
+  X1  X2 ¦a¹₁  a¹₂ ¦H_tetha = a²
+  0   0  ¦0     1  ¦ 1
+  0   1  ¦0     0  ¦ 0
+  1   0  ¦0     0  ¦ 0
+  1   1  ¦1     0  ¦ 1
+
+====================
+MULTI-CLASSIFICAÇÃO
+====================
+Se quisermos cruiar um algoritimo de classificação n (n > 2) "objetos"
+devemos criar uma rede com n Outputs.
+
+          ¦a¹¦   ¦a²¦  ¦a³¦
+│ x1 │    ¦a¹¦   ¦a²¦  ¦a³¦
+│ x2 │    ¦a¹¦   ¦a²¦  ¦a³¦  > H_tetha(X)
+│ x3 │    ¦a¹¦   ¦a²¦  ¦a³¦
+          ¦a¹¦   ¦a²¦
+
+Assim:
+H_tetha(X) = (n, 1)
+
+Exemplificado:
+se a imagem é o objeto 1, sendo 4 objetos, então:
+H = [1000]
+
+Assim:
+O training set vai ser (x, Y)
+onde X é a imagem e Y = H

@@ -1,0 +1,80 @@
+Hipotese
+  h0(x) == TETA 0 + TETA 1 * X
+
+Parâmetros
+  TETA 0, TETA 1, ..... TETA N
+
+Função de Custo
+  J(TETA 0, TETA 1) == (1 / 2m) * soma_i( H0(X_i) - Y_i)^2
+
+Objetivo
+  Minimizar O Custo
+
+Gradient descent
+  TETA 0_j := TETA 0_j - ALFA * dJ
+  TETA 1_j := TETA 1_j - ALFA * dJ
+
+Precisa ser atualizado simultaneamente
+   temp0 := TETA 0_j - ALFA * dJ
+   temp1 := TETA 1_j - ALFA * dJ
+
+   TETA 0 :=  temp0
+   TETA 1 := temp1
+
+   ALFA é o tamanho do passo (no gráfico) dado a cada intereção
+
+A derivada de J
+   J = (1 / 2m) * soma_i( H0(X_i) - Y_i)^2
+   sendo =
+    H0(X_i) = TETA 0 + TETA 1 * X_i
+
+  derivada parcial de TETA 0
+    (1 / m) * soma_i ( H0(X_i) - Y_i)^2
+
+  derivada parcial de TETA 1
+    (1 / m) * soma_i( H0(X_i - Y_i)) * X_i
+
+  Assim
+    TETA 0 := TETA 0 - ALFA * (1 / m) * soma_i ( H0(X_i) - Y_i)^2
+    TETA 1 := TETA 1 - ALFA * (1 / m) * soma_i( H0(X_i - Y_i)) * X_i
+
+
+Usando Mais parâmetros
+
+H_teta(X) = TETA 0 *X_0 + TETA 1 * X_1 + TETA 2 * X_2 + ... + TETA N * X_n
+
+Para facilitar
+X = [[X_0]       TETA = [[TETA 0]
+     [X_1]               [TETA 1]
+     [X_2]               [TETA 2]
+      .                    .
+     [X_n]]              [TETA N]]
+
+Assim
+  h_teta(x) = TETA^t * X
+
+Derivando J
+ J = (1 / 2m) * soma_i( H0(X_i) - Y_i)^2
+  sendo
+    h_teta(x) = TETA^t * X
+
+  TETA_j := TETA_j - ALFA * (1 / m) * soma_i ( H0(X_i) - Y_i) * X_i(J)
+
+  Então
+    TETA 0 := TETA 0 - ALFA * (1 / m) * soma_i ( H0(X^(i)) - Y_i) * X_0
+    TETA 1 := TETA 1 - ALFA * (1 / m) * soma_i ( H0(X^(i)) - Y_i)) * X_1
+    TETA 2 := TETA 2 - ALFA * (1 / m) * soma_i ( H0(X^(i)) - Y_i) * X_2
+                              .
+                              .
+                              .
+    TETA j := TETA j - ALFA * (1 / m) * soma_i ( H0(X^(i)) - Y_i) * X_i(j)
+
+  Escalando os parametros
+    X_N := (X_N - MI_n) / S_n
+
+    sendo:
+    MI_n == media
+    S_n == o range da amostra
+
+Equação Normal (lendo para n grande)
+  TETA = (X^t * X)^-1  * X^T * Y

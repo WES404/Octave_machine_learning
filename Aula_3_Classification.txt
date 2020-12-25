@@ -1,0 +1,70 @@
+Função de regressão LINEAR
+
+H_0 = G(Z) = G(THETA^T * X)
+G(Z) = 1 / [1 + e ^ - Z]
+
+Sendo y  = {0, 1}
+então
+  G(z) >= 0,5 --> y = 1
+  G(z) < 0,5 --> y = 0
+  
+consequentemente
+  THETA^T * X < 0 --> y = 1
+  THETA^T * X >= 0 --> y = 0
+
+Custo
+  cost(H_0(X,y)) = ⎡ - log(H_0)      SE y = 1
+                   ⎣ - log(1 - H_0)  SE y = 0
+
+&&&&&&&&&&
+y = 0
+Se cost = INFINITO -> H_0 = 1
+Se cost = 0 -> H_0 = 0
+
+y = 1
+Se cost = 0 -> H_0 = 1
+Se cost = INFINITO -> H_0 = 0
+
+ Quando y = H_0 -> cost = 0
+
+Compactando...
+  Cost(H_0, y) = - y * log(H_0) - (1 - y) * log(1 - H_0)
+
+Assim:
+  J(THETA) = - (1 / m) * soma(y * log(H_0) - (1 - y) * log(1 - H_0))
+
+  vetorizado
+  J(θ) = -(1 / m) * soma(y^T log(H_0) − (1 − y)^T log(1 − h_0))
+
+Para minimizar J(TETA)
+  THETA := THETA - ALFA * (1 / m) * d SOMA[(h_0 - Y) * X]
+
+  vetorizado
+  THETA := THETA - ALFA * (1 /m) * X^T * (G(X * THETA) - y)
+=======================================================================================
+Regularização para overfitting
+
+ LINEAR
+ cost
+ J(θ) = (1 / (2 * m)) * soma((h_0 - Y)^2) - lambda * soma(theta ^ 2)
+
+ Gradient descent
+ THETA_i := THETA_i - ALFA * (1 / m) * SOMA[(h_0(i) - Y(i)) * X_i] + (LAMBDA / m) * THETA_i]
+
+ THETA_i := THETA_i(1- ALFA *(lambda / m)) - ALFA * (1 / m) * SOMA[(h_0(i) - Y(i)) * X_i]
+
+Se THETA = (X^T * X)^-1 * X^T * y
+
+A forma Regularizada é:
+
+  THETA = (X^T * X + LAMBDA * M_id(m+1, n+1))^-1 * X^T *y
+
+  Contanto que LAMBDA > 0 a função é Invertivel
+
+  se m <= n, THETA é singular/ não-invertivel
+=========================================================
+ Logistic regression (Regularizada)
+  J(θ) = -(1 / m) * soma(y^T log(H_0) − (1 − y)^T log(1 − h_0)) + (lambda / 2m) * soma(theta^2)
+
+  Gradient descent
+  THETA_i := THETA_i - ALFA * (1 / m) * SOMA[(h_0(i) - Y(i)) * X_i] + (LAMBDA / m) * THETA_i
