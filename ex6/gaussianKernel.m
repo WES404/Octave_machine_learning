@@ -15,8 +15,9 @@ sim = 0;
 %               sigma
 %
 %
+aux = sum((x1 - x2) .^ 2);
 
-
+sim = exp(- aux / (2 * sigma ^ 2));
 
 
 
