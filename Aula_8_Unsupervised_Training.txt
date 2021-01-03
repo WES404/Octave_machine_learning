@@ -1,0 +1,77 @@
+No treino não supervisionado, os exemplos de treino não possuem o parâmetro Y que diz, por exemplo,
+y = 1 e y = 0 para cada exemplo.
+
+Em um algoritimo não supervisionado o algoritimo procura uma "estrutura" nos dados e cria Aglomerados
+(Cluters) separando os dados.
+
+
+K-MEANS
+
+Sendo k o numero de Cluters:
+ . Designamos k Cluters aleatoriamente
+ . Separamos os exemplos de acordo com a distancia entre os Cluters
+ . Tiramos a media da distancia dos exemplos em cada Cluters 
+ . Designamos o novo centroide do Cluters como a media da distancia dos exemplos
+ . Repetimos até achar o melhor centroide do Cluters
+
+J = (1 / m) * soma ( ||X - Mu_C||)^2
+
+Se o centroide de algum Cluters dê 0 significa que nosso modelo passa a ser K - 1 Cluters.
+
+m = numero de exemplos
+
+Repetindo {
+    for i = 1:m 
+        Cᴵ := Designa o Cluster mais próximo do exemplo Xᴵ
+    for k = 1:K
+        Mu_C = media dos exemplos designados ao Cluster
+}
+
+Dimensionality Reduction
+
+Consiste em reduzir o numero de dimensioes (parâmetros) de uma base de exemplos
+Quando dois parâmetros ou mais são iguais ou de modo geral.
+
+k = numero de dimensões
+
+Os exemplos são aproximados na dimensão k - 1
+
+m = numero de exemplos
+
+Z = | z¹ |     zᴵ = [x¹, x², .... x_m] 
+    | z² |
+
+Principal Component Analysis
+O PCA usa o Dimensionality Reduction para encontrar uma projeção melhor para exemplos de treino
+que tem muitas dimensões. 
+
+covariance Matrix
+    Sigma = (1 / m) * soma ( (Xᴵ) * (Xᴵ) . T)
+
+eigenvector 
+[U, S, V] = svd(Sigma)
+
+Sendo U uma matriz n x n
+Uk será = U (n x k) 
+Então
+Z = Uk.T * X
+
+
+Como escolher o K (numero de parâmetros principais)
+
+Média de erro de projeção / total de variação de dados
+
+((1 / m) * soma ( ||X - Mu_C||)^2) / (1 / m) * soma (||Xᴵ||^2) <= 0.01
+
+Na equação [U, S, V] = svd(Sigma)
+
+S = | S11  0   0   0   0 |
+    |  0  S22  0   0   0 |
+    |  0   0  S33  0   0 |
+    |  0   0   0  S44  0 |
+
+Então podemos fazer 
+
+1 - soma_k (Sii) / soma_n (Sii) <= 0.01
+ou
+soma_k (Sii) / soma_n (Sii) >= 0.99
