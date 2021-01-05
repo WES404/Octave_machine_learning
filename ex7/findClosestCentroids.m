@@ -27,7 +27,7 @@ dist = zeros(m, K);
 for i = 1:K
     for j = 1:size(X,1)
 
-        dif = X(j,:) - centroids(i,:); %Tira a diferença das dimensões (x,y)
+        dif = X(j,:) - centroids(i,:); % Tira a diferença das dimensões (x,y)
         aux = sum(dif.^2); % Soma as duas dimensões ao quadrado 
         
         if dist(j, i) == 0
