@@ -1,0 +1,131 @@
+Dado um modelo de treino podemos traçar um parâmetro que mostre os valores padrões.
+Assim, ao adicionar um exemplo novo no modelo, se ele sair desse padrão, podemos dizer que 
+esse exemplo é uma anomalia.
+
+x é uma anomalia se p(x) < epsilon
+x não é anomalia se p(x) >= epsilon
+
+Distribuição Normal(Gaussiana)
+
+    Mu(media) = (1 / m) * soma (x)
+    sigma² = (1 / m) * soma (x - Mu)²
+
+    Densidade:
+
+    p = (1 / sqrt(2 * pi * sigma)) * exp (- (x - Mu)² / (2 * sigma²))
+
+Densidade
+    Éo produto da probabilidade de cada exemplo
+
+    p(X) = p(x1, Mu, sigma²) * .... * p(xm, Mum, sigma²m)
+
+Algoritmo de detecção de anomalia
+
+    1. Encontre um exemplo xj que talvez seja uma anomalia
+    2. Encontre Mu e sigma²
+    3. Tire a Densidade
+    4. Se p(x) < epsilon é anomalia
+
+Distribuição Normal Multivariável
+    p = ((1 / ((2 * pi) ^ (n / 2) * |sigma| ^(1 / 2))) * exp (- (1 / 2) * (x - Mu).T sigma ^ -1 (X - Mu)))
+    
+    onde sigma (n X n)
+
+    Mu(media) = (1 / m) * soma (x)
+    sigma = (1 / m) * soma (x - Mu)(x -Mu).T
+
+    1. Calcule Mu e sigma
+    2. Com um novo exemplo encontre p 
+    3. Se p(x) < epsilon é anomalia
+
+A Distribuição Multivariável é muito custosa para grandes exemplos
+mas consegue pegar melhor a correlação entre os parâmetros.
+
++++++++++++++++++++++++++++++++++++++++++++
+Sistema de Recomendação
+
+    Algoritmo que recomenda livros, filmes, músicas, produtos etc de acordo com preferencia do 
+    usuario.
+
+ 1. Sistema baseado em conteudo
+   Com dados de usuários sobre avaliação de filmes, podemos prefer os filmes não avaliados
+   por usuario x.
+
+   Movie	        Alice	Bob  Carol	David | (romance)  (action)
+Love at last	       5	 5	   0	  0	  |    0.9	      0
+Romance forever        5	 ?	   ?	  0	  |    1.0	     0.01
+Cute puppies of love   ?	 4	   0	  ?	  |    0.99	      0
+Nonstop car chases	   0	 0	   5	  4	  |    0.1	     1.0
+Swords vs. karate	   0	 0	   5      ?	  |     0	     0.9
+
+
+Tiramos x1 = [1 0.9  0], sendo o tipo do filme com o primeiro index como 1
+Assim, vamos prever cada ? (significa que o usuário não viu/avaliou) pela formulacC:cada
+ Theta.T * x1
+
+r(i, j) = 1 se o filme foi avaliado 
+y(i, j) = avaliação
+
+Para descobrir o melhor theta:
+ m = numero de filmes avaliados pelo usuário
+
+ THETA_min = (1 / 2) * soma ( theta.T * X - y)² + (lambda / 2 ) * soma(theta²)
+
+
+
+ Optimização
+  J = (1 / 2) * soma(soma((theta.T * X - y)²)) + (lambda / 2) * soma(soma(Theta_k²))
+ Gradiente
+  Theta_k := Theta_k - ALFA * soma((theta.T * X - y) * X_k + lambda * Theta_k) ; Theta_k(0) = 0   
+
+ 2. Filtragem colaborativa
+
+    Movie	        Alice	Bob  Carol	David | (romance)  (action)
+Love at last	       5	 5	   0	  0	  |    	?         ?
+Romance forever        5	 ?	   ?	  0	  |     ?	      ?
+Cute puppies of love   ?	 4	   0	  ?	  |     ?	      ?
+Nonstop car chases	   0	 0	   5	  4	  |     ?	      ?
+Swords vs. karate	   0	 0	   5      ?	  |     ?	      ?
+
+Os usuarios dizeram suas preferencias (Theta) e como base nas avaliações descobrimos o tipo do filme
+
+Encontramos a classificação(x) dos filmes por
+ j = (1 / 2) * soma(soma((theta.T * X - y)²)) + (lambda / 2) * soma(soma(x_k²))
+ e o gradiente ...
+
+Podemos ainda juntar os dois (Filtragem colaborativa e sistema baseado em conteudo)
+    J = (1 / 2) * soma(theta.T * X - y)²) + (lambda / 2) * soma(soma(Theta_k²)) + (lambda / 2) * soma(soma(x_k²))
+
+Algoritmo
+
+1. Aleatoriamente escolhe THETA e X
+2. Minimiza J com o Gradiente
+    Theta_k := Theta_k - ALFA * soma((theta.T * X - y) * X_k + lambda * Theta_k)
+    X_k := X_k - ALFA * soma((theta.T * X - y) * theta_k + lambda * X_k)
+3. Prever THETA.T * X para o usuario j ao filme i 
+
+Por ultimo, encontrado os X podemos encontrar filmes que seja "iguais" para recomendar
+
+
+Normalização media
+ Ao introduzir um novo usuario, ele não tem avaliação de filmes.
+        5	 5	   0	  0	  ?
+        5	 ?	   ?	  0	  ?
+   Y =  ?	 4	   0	  ?	  ?
+        0	 0	   5	  4	  ?
+        0	 0	   5      0	  ?
+
+   Tiramos a media de cada linha antes da coluna do usuario novo
+         2.5
+         2.5
+   Mu =   2
+         2.25
+         1.25
+
+    Subtraimos a media da matrix
+
+    Y - Mu
+
+    Assim, podemos prever o novo usuário com:
+        theta5 = [0;0] 
+        theta5.T * x + Mu 
