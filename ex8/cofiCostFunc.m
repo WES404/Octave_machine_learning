@@ -40,19 +40,16 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+predic = X * Theta'; %'
+rating = predic - Y;
+error_factor = rating .* R; %% Tira os termos que são zero
+
+J = (1 / 2) * sum(sum(error_factor.^2)) + (lambda / 2) .* sum(sum(Theta.^2)) + ...
+                                          (lambda / 2) .* sum(sum(X.^2));
 
 
-
-
-
-
-
-
-
-
-
-
-
+Theta_grad = error_factor' * X + lambda * Theta; %'
+X_grad = error_factor * Theta + lambda * X; 
 
 
 % =============================================================
