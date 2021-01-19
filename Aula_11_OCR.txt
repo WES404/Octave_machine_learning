@@ -1,0 +1,23 @@
+Photo OCR (Optical Character Recognition) - 
+Consiste no reconhecimento de caracteres numa imagem.
+
+ Esse processo é dado por um "pipeline", termo em que uma base de dados
+ precisa passar por varias etapas.
+
+ Etapas do Photo OCR
+ 1. Detecção de Texto
+ 2. Segmentação (separação) de caracteres
+ 3. Classificação de caracteres
+
+ Pipeline
+Imagem -> Detecção de Texto -> Segmentação de caracteres -> Classificação de caracteres
+
+Sliding Windows
+
+    Para detectar o objeto esperado em uma imagem, podemos fazer uma janela, com um certo tamanho, que irá rolar 
+    pela imagem a procura do objeto. Enviando cada janela para o algoritmo detectar.
+
+Aumentando o numero de exemplos de treino 
+    Em uma base de dados de caracteres, poe exemplo, podemos aumentar o tamanho de dados com adicionamento de fontes
+    de letra diferente. Podemos distorcer um pouco a letra em variações diferentes.
+    Outro exemplo, com audío podemos adicionar distorções de fundo, barulhos e etc.

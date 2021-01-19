@@ -1,0 +1,58 @@
+Ao trabalhar com dados grandes, temos que fazer checagens de sanidade.
+Plotamos a curva de aprendizagem(aula 6), e analisamos os custos (J) de treinamento e teste e/ou validação Cruzada
+
+Gradient Descent Stochastic
+
+    A função de CUSTO e de Gradient Descent de REGRESSÃO LINEAR (Batch):
+        J = (1 / 2m) * soma( H0(X) - Y)^2
+        TETA := TETA - ALFA * (1/M) * soma( H0(X) - Y)X
+    Em uma basede dados com 300,000,000 exemplos seria custoso esse algoritimo. Por isso, usamos
+    o Stochastic, que calcula o J apenas uma vez:
+
+    J = (1 / m) * soma((1/2) * H0(X_i) - Y_i)^2
+
+    Para isso embaralhamos os dados e escolhemos um.
+    loop {
+        TETA := TETA - ALFA * (H0(X_i) - Y)X_i 
+    }
+
+    Para analisar ser o Gradient está convergendo, olhamos a função de custo antes do theta ser atualizado.
+    A cada x intereções, por exemplo, plotamos uma media.
+    Podemos ir diminuindo ALFA lentamente para o theta converger:
+    
+        Alfa = const1 / (intereções + const2)
+    As duas constantes são escolhidas aleatoriamente e buscadas as que foram melhores. 
+
+Mini-batch Gradient Descent
+    Enquanto o Stochastic usar 1 exdemplo a cada intereção
+    o Mini-batch usa "b" exemplos.
+
+     J = (1 / m) * soma((H0(X) - Y)^2)
+
+     b = 10
+     loop {
+         TETA := TETA - ALFA * (1 / 10) * soma_b((H0(X_i) - Y)X_i) 
+     }
+
+ONLINE LEARNING
+
+    Para sempre[
+        pega (x,y) do usuario
+        atualiza thetha 
+           TETA := TETA - ALFA ((H0(X_i) - Y)X_i)X_i 
+    ]
+
+
+Map reduce
+
+    Dado treinamento com 400 exemplos, dividimos em valores iguais e fazemos a função 
+    de custo.
+
+    temp1 = soma_100((H0(X_i) - Y)X_i) 
+    temp2 = soma_200((H0(X_i) - Y)X_i) 
+    temp3 = soma_300((H0(X_i) - Y)X_i) 
+    temp4 = soma_400((H0(X_i) - Y)X_i) 
+
+    No fim, juntamos para computar o Gradient
+
+    thetha := theta - ALFA *(1 / 400) * (temp1 + temp2 + temp3 + temp4)
